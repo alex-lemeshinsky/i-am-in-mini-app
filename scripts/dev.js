@@ -33,16 +33,16 @@ args.forEach((arg, index) => {
 async function checkPort(port) {
   return new Promise((resolve) => {
     const server = createServer();
-    
+
     server.once('error', () => {
       resolve(true); // Port is in use
     });
-    
+
     server.once('listening', () => {
       server.close();
       resolve(false); // Port is free
     });
-    
+
     server.listen(port);
   });
 }
@@ -88,8 +88,8 @@ async function startDev() {
     console.error(`Port ${port} is already in use. To find and kill the process using this port:\n\n` +
       (process.platform === 'win32'
         ? `1. Run: netstat -ano | findstr :${port}\n` +
-          '2. Note the PID (Process ID) from the output\n' +
-          '3. Run: taskkill /PID <PID> /F\n'
+        '2. Note the PID (Process ID) from the output\n' +
+        '3. Run: taskkill /PID <PID> /F\n'
         : `On macOS/Linux, run:\nnpm run cleanup\n`) +
       '\nThen try running this command again.');
     process.exit(1);
@@ -109,13 +109,16 @@ async function startDev() {
    5. Navigate to: https://farcaster.xyz/~/developers/mini-apps/preview
    6. Enter your ngrok URL and click "Preview" to test your mini app
 `)
-  
+
   // Start next dev with appropriate configuration
   const nextBin = path.normalize(path.join(projectRoot, 'node_modules', '.bin', 'next'));
 
   nextDev = spawn(nextBin, ['dev', '-p', port.toString()], {
     stdio: 'inherit',
-    env: { ...process.env, NEXT_PUBLIC_URL: miniAppUrl, NEXTAUTH_URL: miniAppUrl },
+    env: {
+      ...process.env,
+      // NEXT_PUBLIC_URL: miniAppUrl, NEXTAUTH_URL: miniAppUrl 
+    },
     cwd: projectRoot,
     shell: process.platform === 'win32' // Add shell option for Windows
   });

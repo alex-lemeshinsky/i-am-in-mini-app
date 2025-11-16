@@ -20,22 +20,40 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getMiniAppEmbedMetadata(ogImageUrl?: string) {
+type MiniAppEmbedOptions = {
+  imageUrl?: string;
+  buttonTitle?: string;
+  actionUrl?: string;
+  splashImageUrl?: string;
+  splashBackgroundColor?: string;
+};
+
+export function getMiniAppEmbedMetadata(options: MiniAppEmbedOptions = {}) {
+  const {
+    imageUrl,
+    buttonTitle = APP_BUTTON_TEXT,
+    actionUrl = APP_URL,
+    splashImageUrl = APP_SPLASH_URL,
+    splashBackgroundColor = APP_SPLASH_BACKGROUND_COLOR,
+  } = options;
+
+  const resolvedImage = imageUrl ?? APP_OG_IMAGE_URL;
+
   return {
-    version: 'next',
-    imageUrl: ogImageUrl ?? APP_OG_IMAGE_URL,
+    version: '1',
+    imageUrl: resolvedImage,
     ogTitle: APP_NAME,
     ogDescription: APP_DESCRIPTION,
-    ogImageUrl: ogImageUrl ?? APP_OG_IMAGE_URL,
+    ogImageUrl: resolvedImage,
     button: {
-      title: APP_BUTTON_TEXT,
+      title: buttonTitle,
       action: {
-        type: 'launch_frame',
+        type: 'launch_miniapp',
         name: APP_NAME,
-        url: APP_URL,
-        splashImageUrl: APP_SPLASH_URL,
+        url: actionUrl,
+        splashImageUrl,
         iconUrl: APP_ICON_URL,
-        splashBackgroundColor: APP_SPLASH_BACKGROUND_COLOR,
+        splashBackgroundColor,
         description: APP_DESCRIPTION,
         primaryCategory: APP_PRIMARY_CATEGORY,
         tags: APP_TAGS,

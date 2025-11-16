@@ -1,8 +1,10 @@
 'use client'
 
 import Image from "next/image"
+import { useRouter } from "next/navigation";
 
 interface EventsItemProps {
+    id: string;
     title: string
     description: string
     username: string;
@@ -10,9 +12,29 @@ interface EventsItemProps {
     pfpUrl: string
 }
 
-export default function EventsItem({ title, description, username, displayName, pfpUrl }: EventsItemProps) {
+export default function EventsItem({ id, title, description, username, displayName, pfpUrl }: EventsItemProps) {
+    const router = useRouter();
+
+    const openEventDetails = async () => {
+        const targetUrl = `/event/${id}`;
+        router.push(targetUrl);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openEventDetails();
+        }
+    };
+
     return (
-        <div className="p-3 rounded-lg border border-zinc-700 text-left">
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={openEventDetails}
+            onKeyDown={handleKeyDown}
+            className="p-3 rounded-lg border border-zinc-700 text-left cursor-pointer hover:border-purple-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 transition"
+        >
             <h2 className="text-lg font-semibold mb-1 text-left">{title}</h2>
             <p
                 className="mb-3 text-sm text-zinc-600 text-left"

@@ -7,12 +7,17 @@ export interface EventResponse {
     _id: string;
     title: string;
     description: string;
-    creatorFarcasterId: number;
     creator: {
         username: string;
         displayName: string;
         pfpUrl: string;
     };
+    participants: {
+        fid: number;
+        username: string;
+        displayName: string;
+        pfpUrl: string;
+    }[];
     createdAt: string;
 }
 
@@ -60,6 +65,7 @@ export default function Events() {
                     {events.map((event) => (
                         <EventsItem
                             key={event._id}
+                            id={event._id}
                             title={event.title}
                             description={event.description}
                             username={event.creator.username}

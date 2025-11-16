@@ -51,7 +51,7 @@ MongoDB Atlas powers the `events` collection used by the app. Each document cont
 - `title` *(string)* – short label for the event.
 - `description` *(string)* – human readable body copy.
 - `creator` *(object)* – Farcaster profile of the author with `fid`, `username`, `displayName`, and `pfpUrl`.
-- `participantsFid` *(number[])* – Farcaster FIDs for attendees who joined the event.
+- `participants` *(object[])* – Array of Farcaster profiles for attendees, each with `fid`, `username`, `displayName`, and `pfpUrl`.
 
 These fields are modeled in `src/lib/models/event.ts`, which exports helper functions to create, update, and list events.
 

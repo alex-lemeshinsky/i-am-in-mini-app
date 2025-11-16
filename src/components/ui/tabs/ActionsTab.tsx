@@ -73,7 +73,7 @@ export function ActionsTab() {
               creatorUser.photo_url ||
               'https://i.imgur.com/1Q9Z1Zt.png',
           },
-          participantsFid: [],
+          participants: [],
         }),
       });
 
@@ -84,7 +84,7 @@ export function ActionsTab() {
 
       const eventId = result.event._id as string;
       const eventPath = `/event/${eventId}`;
-      const eventEmbedUrl = `${APP_URL}${eventPath}`;
+      const eventShareUrl = `${APP_URL}${eventPath}`;
       const shareText = `I just created "${formState.title.trim()}"\n\n${formState.description.trim()}\n\nJoin the event using the mini app preview below.`;
 
       setStatusMessage({
@@ -94,9 +94,11 @@ export function ActionsTab() {
       setFormState({ title: '', description: '' });
 
       try {
+        // Share the event URL so Farcaster can fetch the fc:miniapp metadata
+        // and render the "I am in" mini app preview per the sharing guide.
         await actions.composeCast({
           text: shareText,
-          embeds: [eventEmbedUrl],
+          embeds: [eventShareUrl],
         });
       } catch (composeError) {
         console.error('Failed to open Farcaster composer:', composeError);
