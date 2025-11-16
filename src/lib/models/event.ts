@@ -5,6 +5,7 @@ import { getMongoCollection } from "../mongodb";
 export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  creatorFarcasterId: z.number().min(1, "Valid Farcaster FID is required"),
 });
 
 export type EventInput = z.infer<typeof eventInputSchema>;
