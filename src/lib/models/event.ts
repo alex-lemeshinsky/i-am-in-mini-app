@@ -119,13 +119,19 @@ export async function addParticipantToEvent(
     return event;
   }
 
+  const updatedAt = new Date();
   await collection.updateOne(
     { _id: objectId },
     {
       $push: { participants: participant },
-      $set: { updatedAt: new Date() },
+      $set: { updatedAt },
     }
   );
 
-  return collection.findOne({ _id: objectId });
+  const updatedEvent = await collection.findOne({ _id: objectId });
+  if (!updatedEvent) {
+    return null;
+  }
+
+  return { event: updatedEvent, updatedAt };
 }
