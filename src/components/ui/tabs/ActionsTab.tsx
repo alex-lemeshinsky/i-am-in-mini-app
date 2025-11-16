@@ -139,20 +139,6 @@ export function ActionsTab() {
         className="space-y-4 bg-gray-50 dark:bg-gray-900 p-4 rounded-lg"
       >
         <div className="space-y-1">
-          <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Creator Farcaster FID
-          </div>
-          <div className="text-sm text-gray-900 dark:text-gray-100 font-mono">
-            {context?.user?.fid ?? "Not signed in"}
-          </div>
-          {!context?.user?.fid && (
-            <p className="text-xs text-red-600 dark:text-red-400">
-              Sign in within the Actions tab to submit events.
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-1">
           <label
             htmlFor="event-title"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
