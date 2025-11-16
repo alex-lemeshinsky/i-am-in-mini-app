@@ -1,6 +1,6 @@
-import { MiniAppNotificationDetails } from '@farcaster/miniapp-sdk';
-import { Redis } from '@upstash/redis';
-import { APP_NAME } from './constants';
+import { MiniAppNotificationDetails } from "@farcaster/miniapp-sdk";
+import { Redis } from "@upstash/redis";
+import { APP_NAME } from "./constants";
 
 // In-memory fallback storage
 const localStore = new Map<string, MiniAppNotificationDetails>();

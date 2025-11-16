@@ -44,6 +44,23 @@ npm run build
 
 The above command will generate a `.env` file based on the `.env.local` file and user input. Be sure to configure those environment variables on your hosting platform.
 
+## MongoDB Atlas (optional)
+
+MongoDB Atlas powers the `events` collection used by the app. Each document contains:
+
+- `title` *(string)* – short label for the event.
+- `description` *(string)* – human readable body copy.
+
+These fields are modeled in `src/lib/models/event.ts`, which exports helper functions to create, update, and list events.
+
+Add the following environment variables to your `.env.local` (and the hosting provider) to enable MongoDB:
+
+- `MONGODB_URI` – Atlas connection string that includes the username and password.
+- `MONGODB_DB_NAME` *(optional)* – defaults to `i-am-in`.
+- `MONGODB_COLLECTION_EVENTS` *(optional)* – defaults to `events`.
+
+When these variables are not provided the app falls back to Upstash KV (if configured) for notifications and finally to an in-memory store, so local development keeps working either way.
+
 ## Developing Script Locally
 
 This section is only for working on the script and template. If you simply want to create a mini app and _use_ the template, this section is not for you.
@@ -78,4 +95,3 @@ However, this does not fully replicate the npx install flow and may not catch al
 ### Environment Variables and Scripts
 
 If you update environment variable handling, remember to replicate any changes in the `dev`, `build`, and `deploy` scripts as needed. The `build` and `deploy` scripts may need further updates and are less critical for most development workflows.
-
