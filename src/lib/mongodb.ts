@@ -1,4 +1,4 @@
-import { Collection, MongoClient } from "mongodb";
+import { Collection, MongoClient, MongoClientOptions } from "mongodb";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.MONGODB_DB_NAME || "i-am-in";
@@ -17,7 +17,14 @@ async function getMongoClient(): Promise<MongoClient> {
   }
 
   if (!globalForMongo._mongoClientPromise) {
-    const client = new MongoClient(MONGODB_URI);
+    const options: MongoClientOptions = {};
+
+    // Allow opting into insecure TLS for local/self-signed clusters
+    if (process.env.MONGODB_TLS_ALLOW_INVALID_CERTS === "true") {
+      options.tlsAllowInvalidCertificates = true;
+    }
+
+    const client = new MongoClient(MONGODB_URI, options);
     globalForMongo._mongoClientPromise = client.connect();
   }
 

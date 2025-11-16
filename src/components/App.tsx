@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useMiniApp } from "@neynar/react";
-import { Header } from "~/components/ui/Header";
 import { Footer } from "~/components/ui/Footer";
 import { HomeTab, ActionsTab, ContextTab, WalletTab } from "~/components/ui/tabs";
 import { USE_WALLET } from "~/lib/constants";
@@ -100,12 +99,7 @@ export default function App(
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
     >
-      {/* Header should be full width */}
-      <Header neynarUser={neynarUser} />
-
-      {/* Main content and footer should be centered */}
       <div className="container py-2 pb-20">
-        {/* Main title */}
         <h1 className="text-2xl font-bold text-center mb-4">{title}</h1>
 
         {currentTab === Tab.Events && <HomeTab />}
