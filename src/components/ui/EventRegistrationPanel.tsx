@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useMiniApp } from "@neynar/react";
 import { Button } from "./Button";
+import { APP_URL } from "~/lib/constants";
 
 type Participant = {
   fid: number;
@@ -20,7 +21,7 @@ export function EventRegistrationPanel({
   eventId,
   initialParticipants,
 }: EventRegistrationPanelProps) {
-  const { context } = useMiniApp();
+  const { context, actions } = useMiniApp();
   const [participants, setParticipants] = useState<Participant[]>(initialParticipants);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -81,6 +82,17 @@ export function EventRegistrationPanel({
       }
 
       setParticipants(result.event.participants ?? []);
+
+      try {
+        const eventUrl = `${APP_URL}/event/${eventId}`;
+        const shareText = `I've just registered for the "${result.event.title}" event. Join me using the "I am in" button below.`;
+        await actions.composeCast({
+          text: shareText,
+          embeds: [eventUrl],
+        });
+      } catch (shareError) {
+        console.error("Failed to open composer for registration share:", shareError);
+      }
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to register"

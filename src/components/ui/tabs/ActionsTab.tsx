@@ -85,7 +85,7 @@ export function ActionsTab() {
       const eventId = result.event._id as string;
       const eventPath = `/event/${eventId}`;
       const eventShareUrl = `${APP_URL}${eventPath}`;
-      const shareText = `I just created "${formState.title.trim()}"\n\n${formState.description.trim()}\n\nJoin the event using the mini app preview below.`;
+      const shareText = `I just created "${formState.title.trim()}" event.\n\nAbout:\n${formState.description.trim()}\n\nJoin this event using the "I am in" button below.`;
 
       setStatusMessage({
         type: "success",
