@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Plus, User } from 'lucide-react';
+import { Calendar, Plus, User } from "lucide-react";
 import { Tab } from "~/components/App";
 
 interface FooterProps {
@@ -8,13 +8,15 @@ interface FooterProps {
   showWallet?: boolean;
 }
 
-export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab, showWallet = false }) => (
+export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab }) => (
   <div className="fixed bottom-0 left-0 right-0 mx-4 mb-4 bg-gray-100 dark:bg-gray-800 border-[3px] border-primary px-2 py-2 rounded-lg z-50">
     <div className="flex justify-around items-center h-14">
       <button
         onClick={() => setActiveTab(Tab.Events)}
         className={`flex flex-col items-center justify-center w-full h-full ${
-          activeTab === Tab.Events ? 'text-primary dark:text-primary-light' : 'text-gray-500 dark:text-gray-400'
+          activeTab === Tab.Events
+            ? "text-primary dark:text-primary-light"
+            : "text-gray-500 dark:text-gray-400"
         }`}
       >
         <Calendar />
@@ -23,7 +25,9 @@ export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab, showWal
       <button
         onClick={() => setActiveTab(Tab.Create)}
         className={`flex flex-col items-center justify-center w-full h-full ${
-          activeTab === Tab.Create ? 'text-primary dark:text-primary-light' : 'text-gray-500 dark:text-gray-400'
+          activeTab === Tab.Create
+            ? "text-primary dark:text-primary-light"
+            : "text-gray-500 dark:text-gray-400"
         }`}
       >
         <Plus />
@@ -32,7 +36,9 @@ export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab, showWal
       <button
         onClick={() => setActiveTab(Tab.Account)}
         className={`flex flex-col items-center justify-center w-full h-full ${
-          activeTab === Tab.Account ? 'text-primary dark:text-primary-light' : 'text-gray-500 dark:text-gray-400'
+          activeTab === Tab.Account
+            ? "text-primary dark:text-primary-light"
+            : "text-gray-500 dark:text-gray-400"
         }`}
       >
         <User />

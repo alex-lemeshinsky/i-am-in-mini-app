@@ -44,20 +44,22 @@ export async function POST(
   }
 
   try {
-    const updatedEvent = await addParticipantToEvent(eventId, parsed.data);
-    if (!updatedEvent) {
+    const updateResult = await addParticipantToEvent(eventId, parsed.data);
+    if (!updateResult) {
       return Response.json(
         { success: false, error: "Event not found" },
         { status: 404 }
       );
     }
+    const updatedEvent =
+      "event" in updateResult ? updateResult.event : updateResult;
 
     const creatorAndParticipants = new Map<number, { fid: number; label: string }>();
-    creatorAndParticipants.set(updatedEvent.event.creator.fid, {
-      fid: updatedEvent.event.creator.fid,
-      label: `${updatedEvent.event.creator.displayName} (@${updatedEvent.event.creator.username})`,
+    creatorAndParticipants.set(updatedEvent.creator.fid, {
+      fid: updatedEvent.creator.fid,
+      label: `${updatedEvent.creator.displayName} (@${updatedEvent.creator.username})`,
     });
-    for (const participant of updatedEvent.event.participants ?? []) {
+    for (const participant of updatedEvent.participants ?? []) {
       creatorAndParticipants.set(participant.fid, {
         fid: participant.fid,
         label: `${participant.displayName} (@${participant.username})`,
@@ -65,13 +67,13 @@ export async function POST(
     }
 
     const joinedDisplayName = `${parsed.data.displayName} (@${parsed.data.username})`;
-    const notificationBody = `${joinedDisplayName} joined "${updatedEvent.event.title}"`;
+    const notificationBody = `${joinedDisplayName} joined "${updatedEvent.title}"`;
 
     await Promise.all(
       Array.from(creatorAndParticipants.values()).map(async ({ fid }) => {
         const result = await sendMiniAppNotification({
           fid,
-          title: updatedEvent.event.title,
+          title: updatedEvent.title,
           body: notificationBody,
         });
         if (result.state === "error") {
@@ -82,7 +84,7 @@ export async function POST(
 
     return Response.json({
       success: true,
-      event: serializeEvent(updatedEvent.event ?? updatedEvent),
+      event: serializeEvent(updatedEvent),
     });
   } catch (error) {
     console.error("Failed to register participant", error);

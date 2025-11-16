@@ -10,7 +10,6 @@ import {
   AccountTab,
 } from "~/components/ui/tabs";
 import { USE_WALLET } from "~/lib/constants";
-import { useNeynarUser } from "../hooks/useNeynarUser";
 
 // --- Types ---
 export enum Tab {
@@ -59,9 +58,6 @@ export default function App(
   // --- Hooks ---
   const { isSDKLoaded, context, setInitialTab, setActiveTab, currentTab } =
     useMiniApp();
-
-  // --- Neynar user hook ---
-  const { user: neynarUser } = useNeynarUser(context || undefined);
 
   // --- Effects ---
   /**

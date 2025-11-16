@@ -1,4 +1,4 @@
-import { Collection, MongoClient, MongoClientOptions } from "mongodb";
+import { Collection, Document, MongoClient, MongoClientOptions } from "mongodb";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.MONGODB_DB_NAME || "i-am-in";
@@ -31,7 +31,7 @@ async function getMongoClient(): Promise<MongoClient> {
   return globalForMongo._mongoClientPromise;
 }
 
-export async function getMongoCollection<TSchema = unknown>(
+export async function getMongoCollection<TSchema extends Document = Document>(
   collectionName: string
 ): Promise<Collection<TSchema>> {
   const client = await getMongoClient();

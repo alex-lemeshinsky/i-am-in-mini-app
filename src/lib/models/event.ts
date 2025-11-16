@@ -18,14 +18,18 @@ export type EventDocument = EventInput & {
   updatedAt: Date;
 };
 
-const EVENTS_COLLECTION =
-  process.env.MONGODB_COLLECTION_EVENTS || "events";
+const EVENTS_COLLECTION = process.env.MONGODB_COLLECTION_EVENTS || "events";
 
 export async function getEventsCollection() {
   return getMongoCollection<EventDocument>(EVENTS_COLLECTION);
 }
 
-export async function listEvents(limit = 50, skip = 0, creatorFid?: number, participantFid?: number) {
+export async function listEvents(
+  limit = 50,
+  skip = 0,
+  creatorFid?: number,
+  participantFid?: number
+) {
   const collection = await getEventsCollection();
   const query: Filter<EventDocument> = {};
 
@@ -60,6 +64,7 @@ export async function createEvent(input: EventInput) {
   const collection = await getEventsCollection();
   const now = new Date();
   const doc: OptionalUnlessRequiredId<EventDocument> = {
+    _id: new ObjectId(),
     ...data,
     createdAt: now,
     updatedAt: now,
@@ -68,10 +73,7 @@ export async function createEvent(input: EventInput) {
   return { ...data, _id: result.insertedId, createdAt: now, updatedAt: now };
 }
 
-export async function updateEvent(
-  id: ObjectId,
-  input: Partial<EventInput>
-) {
+export async function updateEvent(id: ObjectId, input: Partial<EventInput>) {
   const collection = await getEventsCollection();
   const now = new Date();
   await collection.updateOne(

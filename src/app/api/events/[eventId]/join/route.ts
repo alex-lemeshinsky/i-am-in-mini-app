@@ -5,16 +5,16 @@ type Params = { eventId: string };
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Params }
+  context: { params: Promise<Params> }
 ) {
+  const { eventId } = await context.params;
+
   if (!process.env.MONGODB_URI) {
     return Response.json(
       { success: false, error: "MongoDB is not configured" },
       { status: 500 }
     );
   }
-
-  const { eventId } = await params;
 
   let fid: number | undefined;
   try {
@@ -35,23 +35,24 @@ export async function POST(
   }
 
   try {
-    const result = await addParticipantToEvent(eventId, {
+    const updateResult = await addParticipantToEvent(eventId, {
       fid,
       username: "",
       displayName: "",
       pfpUrl: "",
     });
 
-    if (!result) {
+    if (!updateResult) {
       return Response.json(
         { success: false, error: "Event not found" },
         { status: 404 }
       );
     }
+    const result = "event" in updateResult ? updateResult.event : updateResult;
 
     return Response.json({
       success: true,
-      event: serializeEvent(result.event ?? result),
+      event: serializeEvent(result),
     });
   } catch (error) {
     console.error("Failed to join event", error);
