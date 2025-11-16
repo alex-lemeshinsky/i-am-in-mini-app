@@ -10,10 +10,10 @@ import { useNeynarUser } from "../hooks/useNeynarUser";
 
 // --- Types ---
 export enum Tab {
-  Home = "home",
-  Actions = "actions",
-  Context = "context",
-  Wallet = "wallet",
+  Events = "events",
+  Create = "create",
+  Account = "account",
+  Event = "event"
 }
 
 export interface AppProps {
@@ -74,7 +74,7 @@ export default function App(
    */
   useEffect(() => {
     if (isSDKLoaded) {
-      setInitialTab(Tab.Home);
+      setInitialTab(Tab.Events);
     }
   }, [isSDKLoaded, setInitialTab]);
 
@@ -108,11 +108,10 @@ export default function App(
         {/* Main title */}
         <h1 className="text-2xl font-bold text-center mb-4">{title}</h1>
 
-        {/* Tab content rendering */}
-        {currentTab === Tab.Home && <HomeTab />}
-        {currentTab === Tab.Actions && <ActionsTab />}
-        {currentTab === Tab.Context && <ContextTab />}
-        {currentTab === Tab.Wallet && <WalletTab />}
+        {currentTab === Tab.Events && <HomeTab />}
+        {currentTab === Tab.Create && <ActionsTab />}
+        {currentTab === Tab.Account && <ContextTab />}
+        {currentTab === Tab.Event && <WalletTab />}
 
         {/* Footer with navigation */}
         <Footer activeTab={currentTab as Tab} setActiveTab={setActiveTab} showWallet={USE_WALLET} />
