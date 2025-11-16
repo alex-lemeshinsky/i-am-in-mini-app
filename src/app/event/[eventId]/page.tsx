@@ -46,11 +46,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function EventPage({
-  params,
-}: {
-  params: Params;
-}) {
+export default async function EventPage({ params }: { params: Params }) {
   const { eventId } = await params;
   const eventRecord = await getEventById(eventId);
 
@@ -71,14 +67,8 @@ export default async function EventPage({
           >
             ← Back to events
           </Link>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            Hosted on {APP_NAME}
-          </span>
         </div>
         <div className="space-y-2">
-          <p className="text-xs uppercase tracking-wide text-indigo-500">
-            {APP_NAME}
-          </p>
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-50">
             {event.title}
           </h1>
