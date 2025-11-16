@@ -90,9 +90,9 @@ export function AccountTab() {
 
       <Section title="My events" items={createdEvents} badge="Created by me" />
       <Section
-        title="I'm attending"
+        title="I am in"
         items={participatingEvents}
-        badge="I'm attending"
+        badge="I am attending"
         emptyText="No events attended yet"
       />
     </div>
