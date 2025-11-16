@@ -38,9 +38,12 @@ export function AccountTab() {
       setError(null);
 
       try {
+        const creatorUrl = `/api/events?creatorFid=${fid}&limit=20`;
+        const participantUrl = `/api/events?participantFid=${fid}&limit=20`;
+
         const [createdRes, participatingRes] = await Promise.all([
-          fetch(`/api/events?creatorFid=${fid}&limit=20`),
-          fetch(`/api/events?participantFid=${fid}&limit=20`),
+          fetch(creatorUrl),
+          fetch(participantUrl),
         ]);
 
         const createdData = await createdRes.json();

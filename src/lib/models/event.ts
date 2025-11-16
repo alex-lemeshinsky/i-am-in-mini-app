@@ -34,7 +34,7 @@ export async function listEvents(limit = 50, skip = 0, creatorFid?: number, part
   }
 
   if (participantFid) {
-    query.participantsFid = participantFid;
+    query["participants.fid"] = participantFid;
   }
 
   return collection
