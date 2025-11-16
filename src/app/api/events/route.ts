@@ -1,5 +1,10 @@
 import { NextRequest } from "next/server";
-import { createEvent, eventInputSchema, listEvents } from "~/lib/models/event";
+import {
+  createEvent,
+  eventInputSchema,
+  listEvents,
+  serializeEvent,
+} from "~/lib/models/event";
 
 export async function GET(request: NextRequest) {
   if (!process.env.MONGODB_URI) {
@@ -31,12 +36,7 @@ export async function GET(request: NextRequest) {
       page,
       limit,
       hasMore,
-      events: trimmed.map((event) => ({
-        ...event,
-        _id: event._id.toString(),
-        createdAt: event.createdAt.toISOString(),
-        updatedAt: event.updatedAt.toISOString(),
-      })),
+      events: trimmed.map(serializeEvent),
     });
   } catch (error) {
     console.error("Failed to list events", error);
@@ -77,12 +77,7 @@ export async function POST(request: NextRequest) {
     const event = await createEvent(parsed.data);
     return Response.json({
       success: true,
-      event: {
-        ...event,
-        _id: event._id.toString(),
-        createdAt: event.createdAt.toISOString(),
-        updatedAt: event.updatedAt.toISOString(),
-      },
+      event: serializeEvent(event),
     });
   } catch (error) {
     console.error("Failed to create event", error);

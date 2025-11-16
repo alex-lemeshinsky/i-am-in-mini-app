@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { FormEvent, useState } from 'react';
-import { useMiniApp } from '@neynar/react';
-import { Button } from '../Button';
-import { APP_URL } from '~/lib/constants';
+import { FormEvent, useState } from "react";
+import { useMiniApp } from "@neynar/react";
+import { Button } from "../Button";
+import { APP_URL } from "~/lib/constants";
 
 interface FormState {
   title: string;
@@ -18,12 +18,12 @@ interface FormState {
 export function ActionsTab() {
   const { context, actions } = useMiniApp();
   const [formState, setFormState] = useState<FormState>({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
-    type: 'success' | 'error';
+    type: "success" | "error";
     text: string;
   } | null>(null);
 
@@ -35,25 +35,25 @@ export function ActionsTab() {
 
     if (!creatorUser?.fid || !creatorUser?.username) {
       setStatusMessage({
-        type: 'error',
-        text: 'Sign in with Farcaster to publish events.',
+        type: "error",
+        text: "Sign in with Farcaster to publish events.",
       });
       return;
     }
 
     if (!formState.title.trim() || !formState.description.trim()) {
       setStatusMessage({
-        type: 'error',
-        text: 'Both title and description are required.',
+        type: "error",
+        text: "Both title and description are required.",
       });
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: formState.title.trim(),
           description: formState.description.trim(),
@@ -71,7 +71,7 @@ export function ActionsTab() {
               creatorUser.pfp_url ||
               creatorUser.photoUrl ||
               creatorUser.photo_url ||
-              'https://i.imgur.com/1Q9Z1Zt.png',
+              "https://i.imgur.com/1Q9Z1Zt.png",
           },
           participants: [],
         }),
@@ -79,7 +79,7 @@ export function ActionsTab() {
 
       const result = await response.json().catch(() => ({}));
       if (!response.ok || result?.success === false || !result?.event?._id) {
-        throw new Error(result?.error || 'Failed to create event');
+        throw new Error(result?.error || "Failed to create event");
       }
 
       const eventId = result.event._id as string;
@@ -88,10 +88,10 @@ export function ActionsTab() {
       const shareText = `I just created "${formState.title.trim()}"\n\n${formState.description.trim()}\n\nJoin the event using the mini app preview below.`;
 
       setStatusMessage({
-        type: 'success',
-        text: 'Event created successfully.',
+        type: "success",
+        text: "Event created successfully.",
       });
-      setFormState({ title: '', description: '' });
+      setFormState({ title: "", description: "" });
 
       try {
         // Share the event URL so Farcaster can fetch the fc:miniapp metadata
@@ -101,12 +101,12 @@ export function ActionsTab() {
           embeds: [eventShareUrl],
         });
       } catch (composeError) {
-        console.error('Failed to open Farcaster composer:', composeError);
+        console.error("Failed to open Farcaster composer:", composeError);
       }
     } catch (error) {
       setStatusMessage({
-        type: 'error',
-        text: error instanceof Error ? error.message : 'Unexpected error',
+        type: "error",
+        text: error instanceof Error ? error.message : "Unexpected error",
       });
     } finally {
       setIsSubmitting(false);
@@ -125,9 +125,9 @@ export function ActionsTab() {
       {statusMessage && (
         <div
           className={`text-sm rounded-md px-3 py-2 ${
-            statusMessage.type === 'success'
-              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
-              : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'
+            statusMessage.type === "success"
+              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
           }`}
         >
           {statusMessage.text}
@@ -143,7 +143,7 @@ export function ActionsTab() {
             Creator Farcaster FID
           </div>
           <div className="text-sm text-gray-900 dark:text-gray-100 font-mono">
-            {context?.user?.fid ?? 'Not signed in'}
+            {context?.user?.fid ?? "Not signed in"}
           </div>
           {!context?.user?.fid && (
             <p className="text-xs text-red-600 dark:text-red-400">
@@ -200,7 +200,7 @@ export function ActionsTab() {
           disabled={isSubmitting || !context?.user?.fid}
           isLoading={isSubmitting}
         >
-          {isSubmitting ? 'Submitting...' : 'Publish event'}
+          {isSubmitting ? "Submitting..." : "Publish event"}
         </Button>
       </form>
     </div>

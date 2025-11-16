@@ -1,7 +1,7 @@
 import { Filter, ObjectId, OptionalUnlessRequiredId } from "mongodb";
 import { z } from "zod";
 import { getMongoCollection } from "../mongodb";
-import { farcasterUserSchema } from "./user";
+import { farcasterUserSchema, type FarcasterUser } from "./user";
 
 export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -84,4 +84,48 @@ export async function updateEvent(
     }
   );
   return collection.findOne({ _id: id });
+}
+
+export function serializeEvent(event: EventDocument) {
+  return {
+    ...event,
+    _id: event._id.toString(),
+    createdAt: event.createdAt.toISOString(),
+    updatedAt: event.updatedAt.toISOString(),
+  };
+}
+
+export async function addParticipantToEvent(
+  eventId: string,
+  participant: FarcasterUser
+) {
+  const collection = await getEventsCollection();
+  let objectId: ObjectId;
+  try {
+    objectId = new ObjectId(eventId);
+  } catch {
+    return null;
+  }
+
+  const event = await collection.findOne({ _id: objectId });
+  if (!event) {
+    return null;
+  }
+
+  const alreadyRegistered = event.participants?.some(
+    (entry) => entry.fid === participant.fid
+  );
+  if (alreadyRegistered) {
+    return event;
+  }
+
+  await collection.updateOne(
+    { _id: objectId },
+    {
+      $push: { participants: participant },
+      $set: { updatedAt: new Date() },
+    }
+  );
+
+  return collection.findOne({ _id: objectId });
 }
