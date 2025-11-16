@@ -1,11 +1,12 @@
 import { ObjectId, OptionalUnlessRequiredId } from "mongodb";
 import { z } from "zod";
 import { getMongoCollection } from "../mongodb";
+import { farcasterUserSchema, type FarcasterUser } from "./user";
 
 export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  creatorFarcasterId: z.number().min(1, "Valid Farcaster FID is required"),
+  creator: farcasterUserSchema,
   participantsFid: z.array(z.number().min(1)).default([]),
 });
 

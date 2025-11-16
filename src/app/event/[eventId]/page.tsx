@@ -56,8 +56,13 @@ export default async function EventPage({
         <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
           {event.description}
         </p>
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 text-xs text-gray-500 dark:text-gray-400">
-          Created by Farcaster FID {event.creatorFarcasterId}
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <div className="font-medium text-gray-700 dark:text-gray-200">
+            Created by {event.creator.displayName}
+          </div>
+          <div className="text-gray-500 dark:text-gray-400">
+            @{event.creator.username} · FID {event.creator.fid}
+          </div>
         </div>
       </div>
     </div>

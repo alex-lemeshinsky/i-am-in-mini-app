@@ -31,7 +31,9 @@ export function ActionsTab() {
     event.preventDefault();
     setStatusMessage(null);
 
-    if (!context?.user?.fid) {
+    const creatorUser = context?.user as Record<string, any> | undefined;
+
+    if (!creatorUser?.fid || !creatorUser?.username) {
       setStatusMessage({
         type: 'error',
         text: 'Sign in with Farcaster to publish events.',
@@ -55,7 +57,22 @@ export function ActionsTab() {
         body: JSON.stringify({
           title: formState.title.trim(),
           description: formState.description.trim(),
-          creatorFarcasterId: context.user.fid,
+          creator: {
+            fid: creatorUser.fid,
+            username: creatorUser.username,
+            displayName:
+              creatorUser.displayName ||
+              creatorUser.display_name ||
+              creatorUser.fullName ||
+              creatorUser.name ||
+              creatorUser.username,
+            pfpUrl:
+              creatorUser.pfpUrl ||
+              creatorUser.pfp_url ||
+              creatorUser.photoUrl ||
+              creatorUser.photo_url ||
+              'https://i.imgur.com/1Q9Z1Zt.png',
+          },
           participantsFid: [],
         }),
       });
