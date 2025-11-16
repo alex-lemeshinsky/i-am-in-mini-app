@@ -6,6 +6,7 @@ export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   creatorFarcasterId: z.number().min(1, "Valid Farcaster FID is required"),
+  participantsFid: z.array(z.number().min(1)).default([]),
 });
 
 export type EventInput = z.infer<typeof eventInputSchema>;
@@ -30,6 +31,16 @@ export async function listEvents(limit = 50) {
     .sort({ createdAt: -1 })
     .limit(limit)
     .toArray();
+}
+
+export async function getEventById(id: string) {
+  const collection = await getEventsCollection();
+  try {
+    const objectId = new ObjectId(id);
+    return await collection.findOne({ _id: objectId });
+  } catch {
+    return null;
+  }
 }
 
 export async function createEvent(input: EventInput) {

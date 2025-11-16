@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useMiniApp } from '@neynar/react';
 import { Button } from '../Button';
+import { APP_URL } from '~/lib/constants';
 
 interface FormState {
   title: string;
@@ -15,7 +16,7 @@ interface FormState {
  * endpoint.
  */
 export function ActionsTab() {
-  const { context } = useMiniApp();
+  const { context, actions } = useMiniApp();
   const [formState, setFormState] = useState<FormState>({
     title: '',
     description: '',
@@ -55,19 +56,34 @@ export function ActionsTab() {
           title: formState.title.trim(),
           description: formState.description.trim(),
           creatorFarcasterId: context.user.fid,
+          participantsFid: [],
         }),
       });
 
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || result?.success === false) {
+      if (!response.ok || result?.success === false || !result?.event?._id) {
         throw new Error(result?.error || 'Failed to create event');
       }
+
+      const eventId = result.event._id as string;
+      const eventPath = `/event/${eventId}`;
+      const eventEmbedUrl = `${APP_URL}${eventPath}`;
+      const shareText = `I just created "${formState.title.trim()}"\n\n${formState.description.trim()}\n\nJoin the event using the mini app preview below.`;
 
       setStatusMessage({
         type: 'success',
         text: 'Event created successfully.',
       });
       setFormState({ title: '', description: '' });
+
+      try {
+        await actions.composeCast({
+          text: shareText,
+          embeds: [eventEmbedUrl],
+        });
+      } catch (composeError) {
+        console.error('Failed to open Farcaster composer:', composeError);
+      }
     } catch (error) {
       setStatusMessage({
         type: 'error',

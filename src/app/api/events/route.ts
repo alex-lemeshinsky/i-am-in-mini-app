@@ -29,7 +29,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const event = await createEvent(parsed.data);
-    return Response.json({ success: true, event });
+    return Response.json({
+      success: true,
+      event: {
+        ...event,
+        _id: event._id.toString(),
+      },
+    });
   } catch (error) {
     console.error("Failed to create event", error);
     return Response.json(
