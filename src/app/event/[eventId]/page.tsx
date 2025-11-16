@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { APP_NAME, APP_DESCRIPTION, APP_URL } from "~/lib/constants";
 import { getEventById } from "~/lib/models/event";
@@ -59,6 +60,17 @@ export default async function EventPage({
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-4">
+        <div className="flex items-center justify-between mb-2">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-300 hover:underline"
+          >
+            ← Back to events
+          </Link>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Hosted on {APP_NAME}
+          </span>
+        </div>
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-wide text-indigo-500">
             {APP_NAME}

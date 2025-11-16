@@ -73,7 +73,7 @@ export function ActionsTab() {
               creatorUser.photo_url ||
               'https://i.imgur.com/1Q9Z1Zt.png',
           },
-          participantsFid: [],
+          participants: [],
         }),
       });
 

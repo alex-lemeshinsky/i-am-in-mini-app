@@ -7,7 +7,7 @@ export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   creator: farcasterUserSchema,
-  participantsFid: z.array(z.number().min(1)).default([]),
+  participants: z.array(farcasterUserSchema).default([]),
 });
 
 export type EventInput = z.infer<typeof eventInputSchema>;
