@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { APP_NAME, APP_DESCRIPTION, APP_URL } from "~/lib/constants";
-import { getEventById } from "~/lib/models/event";
+import { getEventById, serializeEvent } from "~/lib/models/event";
 import { getMiniAppEmbedMetadata } from "~/lib/utils";
+import { EventRegistrationPanel } from "~/components/ui/EventRegistrationPanel";
 
 type Params = Promise<{ eventId: string }>;
 
@@ -51,11 +52,14 @@ export default async function EventPage({
   params: Params;
 }) {
   const { eventId } = await params;
-  const event = await getEventById(eventId);
+  const eventRecord = await getEventById(eventId);
 
-  if (!event) {
+  if (!eventRecord) {
     notFound();
   }
+
+  const event = serializeEvent(eventRecord);
+  const participants = event.participants ?? [];
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
@@ -90,6 +94,10 @@ export default async function EventPage({
             @{event.creator.username} · FID {event.creator.fid}
           </div>
         </div>
+        <EventRegistrationPanel
+          eventId={event._id}
+          initialParticipants={participants}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface EventsItemProps {
@@ -16,8 +16,7 @@ export default function EventsItem({ id, title, description, username, displayNa
     const router = useRouter();
 
     const openEventDetails = async () => {
-        const targetUrl = `/event/${id}`;
-        router.push(targetUrl);
+        router.push(`/event/${id}`);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
