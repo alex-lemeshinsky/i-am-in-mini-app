@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useMiniApp } from "@neynar/react";
 import { Footer } from "~/components/ui/Footer";
-import { HomeTab, ActionsTab, ContextTab, WalletTab } from "~/components/ui/tabs";
+import { HomeTab, ActionsTab, WalletTab, AccountTab } from "~/components/ui/tabs";
 import { USE_WALLET } from "~/lib/constants";
 import { useNeynarUser } from "../hooks/useNeynarUser";
 
@@ -104,7 +104,7 @@ export default function App(
 
         {currentTab === Tab.Events && <HomeTab />}
         {currentTab === Tab.Create && <ActionsTab />}
-        {currentTab === Tab.Account && <ContextTab />}
+        {currentTab === Tab.Account && <AccountTab />}
         {currentTab === Tab.Event && <WalletTab />}
 
         {/* Footer with navigation */}
@@ -113,4 +113,3 @@ export default function App(
     </div>
   );
 }
-

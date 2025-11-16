@@ -1,4 +1,4 @@
-import { ObjectId, OptionalUnlessRequiredId } from "mongodb";
+import { Filter, ObjectId, OptionalUnlessRequiredId } from "mongodb";
 import { z } from "zod";
 import { getMongoCollection } from "../mongodb";
 import { farcasterUserSchema, type FarcasterUser } from "./user";
@@ -25,11 +25,22 @@ export async function getEventsCollection() {
   return getMongoCollection<EventDocument>(EVENTS_COLLECTION);
 }
 
-export async function listEvents(limit = 50) {
+export async function listEvents(limit = 50, skip = 0, creatorFid?: number, participantFid?: number) {
   const collection = await getEventsCollection();
+  const query: Filter<EventDocument> = {};
+
+  if (creatorFid) {
+    query["creator.fid"] = creatorFid;
+  }
+
+  if (participantFid) {
+    query.participantsFid = participantFid;
+  }
+
   return collection
-    .find({})
+    .find(query)
     .sort({ createdAt: -1 })
+    .skip(skip)
     .limit(limit)
     .toArray();
 }
