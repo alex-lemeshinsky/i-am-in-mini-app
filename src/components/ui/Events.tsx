@@ -52,11 +52,11 @@ export default function Events() {
     }
 
     return (
-        <div className="">
+        <div className="overflow-y-auto pr-1 mb-5">
             {events.length === 0 ? (
                 <p className="text-center text-zinc-400">No events found.</p>
             ) : (
-                <div className="grid gap-4">
+                <div className="grid gap-3" style={{ maxHeight: "80vh" }}>
                     {events.map((event) => (
                         <EventsItem
                             key={event._id}

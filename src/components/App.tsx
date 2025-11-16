@@ -99,7 +99,7 @@ export default function App(
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
     >
-      <div className="container py-2 pb-20">
+      <div className="container py-2 pb-4 h-full">
         <h1 className="text-2xl font-bold text-center mb-4">{title}</h1>
 
         {currentTab === Tab.Events && <HomeTab />}
