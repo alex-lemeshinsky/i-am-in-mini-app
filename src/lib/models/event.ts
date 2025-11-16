@@ -1,7 +1,7 @@
 import { ObjectId, OptionalUnlessRequiredId } from "mongodb";
 import { z } from "zod";
 import { getMongoCollection } from "../mongodb";
-import { farcasterUserSchema, type FarcasterUser } from "./user";
+import { farcasterUserSchema } from "./user";
 
 export const eventInputSchema = z.object({
   title: z.string().min(1, "Title is required"),

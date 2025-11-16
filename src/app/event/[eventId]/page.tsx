@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { APP_NAME, APP_DESCRIPTION } from "~/lib/constants";
+import { APP_NAME, APP_DESCRIPTION, APP_URL } from "~/lib/constants";
 import { getEventById } from "~/lib/models/event";
+import { getMiniAppEmbedMetadata } from "~/lib/utils";
 
 type Params = Promise<{ eventId: string }>;
 
@@ -20,12 +21,25 @@ export async function generateMetadata({
     };
   }
 
+  const launchUrl = `${APP_URL}?eventId=${eventId}`;
+  const imageUrl = `${APP_URL}/api/opengraph-image?eventId=${eventId}`;
+  const embedMetadata = getMiniAppEmbedMetadata({
+    actionUrl: launchUrl,
+    buttonTitle: "I am in",
+    imageUrl,
+  });
+
   return {
     title: `${event.title} | ${APP_NAME}`,
     description: event.description,
     openGraph: {
       title: `${event.title} | ${APP_NAME}`,
       description: event.description,
+      images: [imageUrl],
+    },
+    other: {
+      "fc:miniapp": JSON.stringify(embedMetadata),
+      "fc:frame": JSON.stringify(embedMetadata),
     },
   };
 }
