@@ -42,7 +42,7 @@ npm run dev
 ## Deploy
 Any standard Next.js host (e.g., Vercel). Ensure env vars are set.
 
-## Roadmap (this is the base; we’re building a real product, not a toy)
+## Roadmap
 - [ ] Harden event flows: moderation, per-user limits, better errors, optimistic UI.
 - [ ] Crypto where it matters:
   - [ ] Ticket payments for events (custodial/non-custodial) with our service fee.
