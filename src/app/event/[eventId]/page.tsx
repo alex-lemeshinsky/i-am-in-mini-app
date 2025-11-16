@@ -23,7 +23,7 @@ export async function generateMetadata({
     };
   }
 
-  const launchUrl = `${APP_URL}?eventId=${eventId}`;
+  const launchUrl = `${APP_URL}/event/${eventId}`;
   const imageUrl = `${APP_URL}/api/opengraph-image?eventId=${eventId}`;
   const embedMetadata = getMiniAppEmbedMetadata({
     actionUrl: launchUrl,
